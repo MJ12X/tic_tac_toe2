@@ -47,3 +47,12 @@ class Player
     @index  = index
   end
 end
+
+class Game
+  
+  def initialize
+    @playerOne = Player.new('1', 'X')
+    @playerTwo = Player.new('2', 'X')
+    @board     = Board.new
+  end
+      
