@@ -1,5 +1,6 @@
 class Board
   attr_accessor :grid, :turns
+
   def initialize
     @grid = Array.new(3) {Array.new(3, "")}
     @turns = 0
@@ -10,4 +11,12 @@ class Board
     puts row.join("|")
     puts "-------" unless index == grid.length - 1
     end
+  end
+
+class Player
+  attr_accessor :index, :symbol
+  
+  def initialize(symbol,index)
+    @symbol = symbol
+    @index  = index
   end
