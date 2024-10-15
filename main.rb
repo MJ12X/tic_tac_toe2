@@ -20,11 +20,12 @@ class Board
         return
       end
 
-      if grid[row][col]
+      if grid[row][col] != ""
         puts "Position taken"
       return
       end
-      grid[row][col]
+      grid[row][col] = symb
+      @turns += 1
     end
   end
 
