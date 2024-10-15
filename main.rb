@@ -11,6 +11,21 @@ class Board
     puts row.join("|")
     puts "-------" unless index == grid.length - 1
     end
+
+    private
+
+    def place_symbol(row,col,symb)
+      if !row.between?(0,2) || !col.between?(0,2)
+        puts "Invalid position"
+        return
+      end
+
+      if grid[row][col]
+        puts "Position taken"
+      return
+      end
+      grid[row][col]
+    end
   end
 
 class Player
@@ -20,3 +35,4 @@ class Player
     @symbol = symbol
     @index  = index
   end
+
