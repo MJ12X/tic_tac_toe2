@@ -78,6 +78,20 @@ class Game
   end
 
   def player_input
+  current_player = if self.board.moves_made_even "one"
+  else "two"
+    puts "where would you like to put your piece player #{current_player}? '(x,y)'"
+    loop do
+      input = gets.chomp
+      begin
+        self.board.place_symbol(input[1].to_i, input[4].to_i, current_player)
+      rescue RuntimeError => e
+        puts "it seems you've inputted invalid coordinates #{e.message}, please pick valid coordinates '(x,y)'"
+      end
+    end
+  end
+end
+      
 
 
 end
