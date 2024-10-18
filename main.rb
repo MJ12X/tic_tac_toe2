@@ -10,6 +10,11 @@ class Board
     [[0, 2], [1, 2], [2, 2]],
     [[0, 0], [1, 1], [2, 2]],
     [[0, 2], [1, 1], [2, 0]]
+  ] 
+
+  @@PLAYER_TURNS = [
+    "one" => :playerone,
+    "two" => :playertwo
   ]
 
   def initialize
@@ -37,6 +42,16 @@ class Board
     grid[row][col] = symb
     @turns += 1 
   end
+
+  def win
+    @@WIN_CONDITION.each do |possible_win|
+      potential_win = possible_win.map {|row,col| grid[row][col]}
+        if potential_win[0] && potential_win.all? {|sym| sym = potential_win[0]}
+        return @@PLAYER_TURNS[potential_win[0]]
+      end
+    end
+    false
+  end
 end
 
 class Player
@@ -55,4 +70,5 @@ class Game
     @playerTwo = Player.new('2', 'X')
     @board     = Board.new
   end
+end
       
