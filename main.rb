@@ -23,7 +23,7 @@ class Board
   end
 
   def reset
-    @grid = Array.new(3) {Array.new (3, "")}
+    @grid = Array.new(3) {Array.new(3, "")}
     @turns = 0
   end
 
@@ -78,21 +78,29 @@ class Game
   end
 
   def player_input
-  current_player = if self.board.moves_made_even "one"
-  else "two"
+    current_player = self.board.moves_made_even ? "one" : "two"
     puts "where would you like to put your piece player #{current_player}? '(x,y)'"
     loop do
       input = gets.chomp
       begin
-        self.board.place_symbol(input[1].to_i, input[4].to_i, current_player)
+        return self.board.place_symbol(input[1].to_i, input[4].to_i, current_player)
       rescue RuntimeError => e
-        puts "it seems you've inputted invalid coordinates #{e.message}, please pick valid coordinates '(x,y)'"
-      end
+      puts "it seems you've inputted invalid coordinates #{e.message}, please pick valid coordinates '(x,y)'"
     end
   end
 end
-      
 
-
+  def start
+  puts
+    while self.board.turns < 9
+      the_winner = player_input
+      display
+      puts "Player one wins" if winner == playerone
+      puts "Player two wins" if winner == playertwo
+      self.board.reset if winner
+    end
+    puts "It's a draw!"
+    self.board.reset
+  end
 end
       
