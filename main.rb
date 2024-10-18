@@ -12,10 +12,10 @@ class Board
     [[0, 2], [1, 1], [2, 0]]
   ] 
 
-  @@PLAYER_TURNS = [
-    "one" => :playerone,
-    "two" => :playertwo
-  ]
+  @@PLAYER_TURNS = {
+    "X" => :playerone,
+    "O" => :playertwo
+}
 
   def initialize
     @grid = Array.new(3) {Array.new(3, "")}
@@ -48,12 +48,13 @@ class Board
     @turns += 1 
     win
   end
-
+  
   def win
     @@WIN_CONDITION.each do |possible_win|
-      potential_win = possible_win.map {|row,col| grid[row][col]}
-        if potential_win[0] && potential_win.all? {|sym| sym = potential_win[0]}
-        return @@PLAYER_TURNS[potential_win[0]]
+      first_symbol = grid[possible_win[0][0]][possible_win[0][1]]
+        next if first_symbol.nil?
+        if possible_win.all? {|row,col| grid[row][col] == first_symbol}
+        return @@PLAYER_TURNS[first_symbol]
       end
     end
     false
@@ -72,18 +73,18 @@ end
 class Game
   
   def initialize
-    @playerOne = Player.new('1', 'X')
-    @playerTwo = Player.new('2', 'X')
+    @playerOne = Player.new('X', '1')
+    @playerTwo = Player.new('O', '2')
     @board     = Board.new
   end
 
   def player_input
-    current_player = self.board.moves_made_even ? "one" : "two"
-    puts "where would you like to put your piece player #{current_player}? '(x,y)'"
+    current_player_symbol = @board.turns.even? ? @playerOne.symbol : @playerTwo.symbol
+    puts "where would you like to put your piece player #{current_player_symbol}? '(x,y)'"
     loop do
       input = gets.chomp
       begin
-        return self.board.place_symbol(input[1].to_i, input[4].to_i, current_player)
+        return @board.place_symbol(input[1].to_i, input[4].to_i, current_player_symbol)
       rescue RuntimeError => e
       puts "it seems you've inputted invalid coordinates #{e.message}, please pick valid coordinates '(x,y)'"
     end
@@ -92,15 +93,21 @@ end
 
   def start
   puts
-    while self.board.turns < 9
+    while @board.turns < 9
       the_winner = player_input
-      display
-      puts "Player one wins" if winner == playerone
-      puts "Player two wins" if winner == playertwo
-      self.board.reset if winner
+      @board.grid_display
+      puts "Player one wins" if the_winner == :playerone
+      puts "Player two wins" if the_winner == :playertwo
+      @board.reset if the_winner
     end
     puts "It's a draw!"
-    self.board.reset
+    @board.reset
   end
+end
+
+
+test = Game.new
+loop do 
+  test.start
 end
       
