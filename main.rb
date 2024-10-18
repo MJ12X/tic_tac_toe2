@@ -22,6 +22,11 @@ class Board
     @turns = 0
   end
 
+  def reset
+    @grid = Array.new(3) {Array.new (3, "")}
+    @turns = 0
+  end
+
   def grid_display
     grid.each_with_index do |row,index|
     puts row.join(" | ")
@@ -41,6 +46,7 @@ class Board
     end
     grid[row][col] = symb
     @turns += 1 
+    win
   end
 
   def win
@@ -70,5 +76,9 @@ class Game
     @playerTwo = Player.new('2', 'X')
     @board     = Board.new
   end
+
+  def player_input
+
+
 end
       
